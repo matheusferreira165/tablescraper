@@ -1,14 +1,17 @@
 package services
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/matheusferreira165/tablescraper/models"
 )
 
-func ExtractTable(link string) {
+func ExtractTable(link string) models.TableData {
+
+	var tableData models.TableData
+	var rowData []string
 
 	resp, err := http.Get(link)
 	if err != nil {
@@ -24,28 +27,16 @@ func ExtractTable(link string) {
 
 	doc.Find("table").Each(func(i int, s *goquery.Selection) {
 
-		headers := s.Find("th").Each(func(_ int, s *goquery.Selection) {
-
-			if s != nil {
-				fmt.Print(s.Text())
-				fmt.Print(" ")
-			}
+		s.Find("th").Each(func(_ int, s *goquery.Selection) {
+			tableData.Headers = append(tableData.Headers, s.Text())
 		})
 
-		fmt.Println()
-
 		s.Find("td").Each(func(index int, s *goquery.Selection) {
-			if s != nil {
-				fmt.Print(s.Text())
-				fmt.Print(" ")
-
-			}
-			// Printing columns nicely
-
-			if (index+1)%headers.Size() == 0 {
-				fmt.Println()
-			}
+			rowData = append(rowData, s.Text())
+			tableData.Rows = append(tableData.Rows, rowData)
 		})
 
 	})
+
+	return tableData
 }
