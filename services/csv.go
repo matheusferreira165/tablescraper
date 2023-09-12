@@ -32,14 +32,9 @@ func GenerateCsv() {
 	for _, datatable := range datatables.Table {
 
 		var headersformated string
-		var rowformated string
 
 		for _, header := range datatable.Headers {
 			headersformated += fmt.Sprintf("%s,", string(header))
-		}
-
-		for _, row := range datatable.Rows {
-			rowformated += fmt.Sprintf("%v,", string(row))
 		}
 
 		if err := writer.Write([]string{"<!-- TABELA INICIO -->"}); err != nil {
@@ -50,8 +45,10 @@ func GenerateCsv() {
 			log.Fatal(err)
 		}
 
-		if err := writer.Write([]string{rowformated}); err != nil {
-			log.Fatal(err)
+		for _, row := range datatable.Rows {
+			if err := writer.Write(row); err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if err := writer.Write([]string{"<!-- TABELA FIM -->"}); err != nil {
