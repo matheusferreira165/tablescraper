@@ -8,10 +8,9 @@ import (
 	"github.com/matheusferreira165/tablescraper/models"
 )
 
-func ExtractTable(link string) models.TableData {
+func ExtractTable(link string) (models.TableData, error) {
 
 	var tableData models.TableData
-	var rowData []string
 
 	resp, err := http.Get(link)
 	if err != nil {
@@ -32,11 +31,10 @@ func ExtractTable(link string) models.TableData {
 		})
 
 		s.Find("td").Each(func(index int, s *goquery.Selection) {
-			rowData = append(rowData, s.Text())
-			tableData.Rows = append(tableData.Rows, rowData)
+			tableData.Rows = append(tableData.Rows, s.Text())
 		})
 
 	})
 
-	return tableData
+	return tableData, err
 }
