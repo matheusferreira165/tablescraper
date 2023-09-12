@@ -8,9 +8,9 @@ import (
 	"github.com/matheusferreira165/tablescraper/models"
 )
 
-func ExtractTable(link string) (models.TableData, error) {
+func ExtractTable(link string) (models.Table, error) {
 
-	var tableData models.TableData
+	var table models.Table
 
 	resp, err := http.Get(link)
 	if err != nil {
@@ -25,6 +25,7 @@ func ExtractTable(link string) (models.TableData, error) {
 	}
 
 	doc.Find("table").Each(func(i int, s *goquery.Selection) {
+		var tableData models.TableData
 
 		s.Find("th").Each(func(_ int, s *goquery.Selection) {
 			tableData.Headers = append(tableData.Headers, s.Text())
@@ -34,7 +35,8 @@ func ExtractTable(link string) (models.TableData, error) {
 			tableData.Rows = append(tableData.Rows, s.Text())
 		})
 
+		table.Table = append(table.Table, tableData)
 	})
 
-	return tableData, err
+	return table, err
 }
