@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func GenerateCsv() {
+func GenerateCsv(link string) (*os.File, error) {
 
 	file, err := os.Create("./data/TableData.csv")
 
@@ -15,8 +15,6 @@ func GenerateCsv() {
 		log.Fatal(err)
 	}
 	defer file.Close()
-
-	link := "https://www.w3schools.com/html/html_tables.asp"
 
 	datatables, err := ExtractTable(link)
 
@@ -57,4 +55,5 @@ func GenerateCsv() {
 
 	}
 
+	return file, err
 }
