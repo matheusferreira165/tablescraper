@@ -1,9 +1,12 @@
 package main
 
-import "github.com/matheusferreira165/tablescraper/services"
+import (
+	"net/http"
+
+	"github.com/matheusferreira165/tablescraper/routes"
+)
 
 func main() {
-
-	services.GenerateCsv()
-
+	m := routes.Setup()
+	http.ListenAndServe(":3000", m)
 }
