@@ -1,5 +1,6 @@
 package models
 
-type Download struct {
-	Link string `json:"link"`
+type DownloadLink struct {
+	Token string `json:"token"`
+	URL   string `json:"url"`
 }
