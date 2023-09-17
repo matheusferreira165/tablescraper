@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func tokenGenerator() string {
+func TokenGenerator() string {
 
 	b := make([]byte, 7)
 	rand.Read(b)
