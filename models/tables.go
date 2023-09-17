@@ -8,3 +8,7 @@ type TableData struct {
 type Table struct {
 	Table []TableData
 }
+
+type TableLink struct {
+	Link string `json:"link"`
+}
