@@ -28,6 +28,7 @@ func DownloadTable(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Disposition", "attachment; filename="+fileName)
 	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	_, err = io.Copy(w, tmpFile)
 	if err != nil {
