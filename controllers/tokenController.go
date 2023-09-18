@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/matheusferreira165/tablescraper/models"
@@ -11,10 +12,30 @@ import (
 
 var downloadTokens = make(map[string]string)
 
-func GenerateToken(w http.ResponseWriter, r *http.Request) {
+func GenerateTokenDownload(w http.ResponseWriter, r *http.Request) {
+
+	defer r.Body.Close()
+
+	data, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var download models.TableLink
+	if err := json.Unmarshal(data, &download); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	filecsv, err := services.GenerateCsv(download.Link)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	token := services.TokenGenerator()
-	downloadTokens[token] = "TableData.csv"
+	downloadTokens[token] = filecsv.Name()
 
 	downloadURL := fmt.Sprintf("/api/v1/download/%s", token)
 
