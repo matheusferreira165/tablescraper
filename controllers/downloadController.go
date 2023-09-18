@@ -26,7 +26,7 @@ func DownloadTable(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tmpFile.Close()
 
-	w.Header().Set("Content-Disposition", "attachment; filename=TableData.csv")
+	w.Header().Set("Content-Disposition", "attachment; filename="+fileName)
 	w.Header().Set("Content-Type", "text/csv")
 
 	_, err = io.Copy(w, tmpFile)
