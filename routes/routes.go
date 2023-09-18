@@ -15,9 +15,10 @@ func Setup() *mux.Router {
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 	})
 
-	r.HandleFunc("/api/v1/download", controllers.GenerateTokenDownload).Methods("GET")
+	r.Use(c.Handler)
+
+	r.HandleFunc("/api/v1/download", controllers.GenerateTokenDownload).Methods("POST")
 	r.HandleFunc("/api/v1/download/{token}", controllers.DownloadTable).Methods("GET")
-	r.Handle("/", c.Handler(r))
 
 	return r
 }
