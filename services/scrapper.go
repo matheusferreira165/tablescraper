@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -33,13 +32,13 @@ func ExtractTable(link string) (models.Table, error) {
 		})
 
 		s.Find("tr").Each(func(index int, s *goquery.Selection) {
-			var tr string
+			var tr []string
 
 			s.Find("td").Each(func(index int, s *goquery.Selection) {
-				tr += fmt.Sprintf("%s,", s.Text())
+				tr = append(tr, s.Text())
 			})
 
-			tableData.Rows = append(tableData.Rows, []string{tr})
+			tableData.Rows = append(tableData.Rows, tr)
 		})
 
 		table.Table = append(table.Table, tableData)
