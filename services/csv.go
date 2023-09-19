@@ -9,7 +9,8 @@ import (
 
 func GenerateCsv(link string) (*os.File, error) {
 
-	file, err := os.Create("./data/TableData.csv")
+	token := TokenGenerator()
+	file, err := os.Create("./data/TableData_" + token + ".csv")
 
 	if err != nil {
 		log.Fatal(err)
