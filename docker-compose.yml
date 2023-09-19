@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+  api:
+    container_name: table_scraper
+    build: .
+    ports:
+      - 3000:3000
+    restart: on-failure
+    networks:
+      - table_network
+
+networks:
+  table_network:
+    name: table_network
+    driver: bridge
