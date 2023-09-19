@@ -36,5 +36,6 @@ func DownloadTable(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	delete(downloadTokens, token)
 	os.Remove(fileName)
 }
