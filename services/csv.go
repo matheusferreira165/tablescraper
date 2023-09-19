@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/csv"
-	"fmt"
 	"log"
 	"os"
 )
@@ -30,17 +29,17 @@ func GenerateCsv(link string) (*os.File, error) {
 
 	for _, datatable := range datatables.Table {
 
-		var headersformated string
+		var headersformated []string
 
 		for _, header := range datatable.Headers {
-			headersformated += fmt.Sprintf("%s,", string(header))
+			headersformated = append(headersformated, header)
 		}
 
 		if err := writer.Write([]string{"<!-- TABELA INICIO -->"}); err != nil {
 			log.Fatal(err)
 		}
 
-		if err := writer.Write([]string{headersformated}); err != nil {
+		if err := writer.Write(headersformated); err != nil {
 			log.Fatal(err)
 		}
 
