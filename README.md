@@ -37,7 +37,7 @@ Isso iniciará a api na porta 3000
 
 ## Uso
 
-Após a instalação e execução bem-sucedidas, você pode usar a API para realizar a autenticação com JWT. Aqui estão algumas operações de exemplo:
+Após a instalação e execução bem-sucedidas, você pode usar a API para realizar o download do arquivo CSV com as tabelas de qualquer pagina web. Aqui estão algumas operações de exemplo:
 
 - **Gerar Token e URL para download do arquivo:** Envie uma solicitação POST para `/api/v1/download` com o link do site EX:
    ```json
