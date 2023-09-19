@@ -16,21 +16,32 @@ func GenerateTokenDownload(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 
+	var message models.Messages
+
 	data, err := io.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		message.Message = "error reading the website body"
+		w.Header().Add("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(message)
 		return
 	}
 
 	var download models.TableLink
 	if err := json.Unmarshal(data, &download); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		message.Message = "JSON deserialization error: " + err.Error()
+		w.Header().Add("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(message)
 		return
 	}
 
 	filecsv, err := services.GenerateCsv(download.Link)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		message.Message = "error generate csv archive"
+		w.Header().Add("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(message)
 		return
 	}
 
@@ -45,5 +56,6 @@ func GenerateTokenDownload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
 }
