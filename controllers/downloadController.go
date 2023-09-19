@@ -39,10 +39,6 @@ func DownloadTable(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/csv")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	message.Message = "sucess"
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(message)
-
 	delete(downloadTokens, token)
 	os.Remove(fileName)
 }
